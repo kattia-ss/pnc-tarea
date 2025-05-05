@@ -7,6 +7,8 @@ type User struct {
 	Metadata
 }
 
+// Define la estructura User y su constructor.
+
 func NewUser(id string, name string, email string, metadata Metadata) User {
 	return User{
 		Id:       id,

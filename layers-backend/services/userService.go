@@ -14,6 +14,8 @@ type UserService struct {
 	userRepository repositories.UserRepository
 }
 
+// Lógica de negocio.
+
 func NewUserService(userRepository repositories.UserRepository) *UserService {
 	return &UserService{userRepository: userRepository}
 }
@@ -63,6 +65,8 @@ func (u UserService) Create(user dto.CreateUser) error {
 	meta := entities.Metadata{
 		CreatedAt: time.Now().Format(time.RFC3339),
 		UpdatedAt: time.Now().Format(time.RFC3339),
+		CreatedBy: "webapp",
+		UpdatedBy: "webapp",
 	}
 	newUser := entities.NewUser(id.String(), user.Name, user.Email, meta)
 
@@ -80,4 +84,24 @@ func (u UserService) GetAll() ([]entities.User, error) {
 	}
 
 	return data, nil
+}
+
+// crear GetById
+func (u *UserService) GetById(id string) (entities.User, error) {
+	user, err := u.userRepository.GetById(id)
+	if err != nil {
+		return entities.User{}, err
+	}
+
+	return user, nil
+}
+
+// crear Delete
+
+func (u *UserService) Delete(id string) error {
+	err := u.userRepository.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

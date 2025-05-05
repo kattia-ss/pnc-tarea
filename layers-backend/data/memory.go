@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+// Data es un slice de usuarios que simula una base de datos en memoria
+
 var meta = entities.Metadata{
 	CreatedAt: time.Now().String(),
 	UpdatedAt: time.Now().String(),

@@ -4,9 +4,12 @@ import (
 	"errors"
 	"layersapi/data"
 	"layersapi/entities"
+	"time"
 )
 
 type UserRepository struct{}
+
+// Implementa UserRepository con una estructura en memoria (data.Data). Ideal para pruebas.
 
 func NewUserRepository() *UserRepository {
 	return &UserRepository{}
@@ -37,6 +40,20 @@ func (u UserRepository) Update(id, name, email string) error {
 		if v.Id == id {
 			data.Data[i].Name = name
 			data.Data[i].Email = email
+			data.Data[i].UpdatedAt = time.Now().String()
+			data.Data[i].UpdatedBy = "webapp"
+			return nil
+		}
+	}
+
+	return errors.New("user not found")
+}
+
+func (u *UserRepository) Delete(id string) error {
+	for i, v := range data.Data {
+		if v.Id == id {
+			// Eliminar el elemento del slice
+			data.Data = append(data.Data[:i], data.Data[i+1:]...)
 			return nil
 		}
 	}
